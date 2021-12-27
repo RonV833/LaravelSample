@@ -13,10 +13,12 @@ const AddProduct = () => {
         inStock: 0,
         error_list: [],
     });
+    //called in onchange
     const handleInput = (e) => {
         e.persist();
         setProduct({...productInput, [e.target.name]: e.target.value});
     };
+    //upon clicking submit button, called in onSubmit, assign values in properties
     const saveProduct = (e) => {
         e.preventDefault();
         const data = {
@@ -25,6 +27,7 @@ const AddProduct = () => {
             price: productInput.price,
             inStock: productInput.inStock,
         }
+        //to connect to backend
         axios.post(`api/addproduct`, data).then(res => {
             if (res.data.status === 200) {
                 swal("Success", res.data.message, "Success");
@@ -35,7 +38,7 @@ const AddProduct = () => {
                     inStock: 0,
                     error_list: [],
                 });
-                history.push("/products") 
+                history("/products") //will redirect to product, just use history since useNavigate instead of history.push
             }
             else if (res.data.status === 422) {
                 setProduct({...productInput, error_list: res.data.validate_err})
@@ -47,32 +50,32 @@ const AddProduct = () => {
         <div>
             <div className='container'>
                 
-                <div class="card">
-                    <div class="card-header">
+                <div className="card">
+                    <div className="card-header">
                         <h4>Add Product
                             <Link to={"/"} className='btn btn-sm float-end'>BACK</Link>
                         </h4>
                         
                     </div>
-                    <div class="card-body">
+                    <div className="card-body">
                         <form onSubmit={saveProduct}>
                             <div className='form-group mb-3'>
-                                <label for="name">Product Name</label>
+                                <label htmlFor="name">Product Name</label>
                                 <input className='form-control' type="text" name='name' onChange={handleInput} value={productInput.name}/>
                                 <span className='text-danger'>{productInput.error_list.name}</span>   
                             </div>
                             <div className='form-group mb-3'>
-                                <label for="description">Product Description</label>
+                                <label htmlFor="description">Product Description</label>
                                 <input className='form-control' type="text" name='description' onChange={handleInput} value={productInput.description}/>
                                 <span className='text-danger'>{productInput.error_list.description}</span>   
                             </div>
                             <div className='form-group mb-3'>
-                                <label for="price">Product Price</label>
+                                <label htmlFor="price">Product Price</label>
                                 <input className='form-control' type="text" name='price' onChange={handleInput} value={productInput.price}/>
                                 <span className='text-danger'>{productInput.error_list.price}</span>   
                             </div>
                             <div className='form-group mb-3'>
-                                <label for="inStock">Product In Stock</label>
+                                <label htmlFor="inStock">Product In Stock</label>
                                 <input className='form-control' type="text" name='inStock' onChange={handleInput} value={productInput.inStock}/>
                                 <span className='text-danger'>{productInput.error_list.inStock}</span>   
                             </div>
